@@ -75,6 +75,8 @@ The two methods when using the resource are:
  - `resource.grasp()` wich increment `resource.consumers` by `1`
  - `resource.release()` wich decrement `resource.consumers` by `1`
 
+The resource supply will emit a `consumers` event with the count when it changes.
+
 The resource is active if it has one or more `consumers`. When it becomes active, it calls the `activate` method, which you should override in the definition:
 
 ```javascript
@@ -246,6 +248,8 @@ computed: {
   }
 },
 ```
+
+There are the `ready` (with a boolean argument), `is-ready` and `is-not-ready` events.
 
 You can also use the `resource.ensureReady()` method which return a promise that resolves as soon as the resource supply is ready (or immediatly if it is already):
 
