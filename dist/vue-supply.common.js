@@ -193,13 +193,10 @@ module.exports =
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__resource_supply__ = __webpack_require__(0);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "ResourceSupply", function() { return __WEBPACK_IMPORTED_MODULE_0__resource_supply__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Supply", function() { return __WEBPACK_IMPORTED_MODULE_0__resource_supply__["a"]; });
 /* harmony export (immutable) */ __webpack_exports__["consume"] = consume;
 /* harmony export (immutable) */ __webpack_exports__["use"] = use;
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "supply", function() { return supply; });
 /* harmony export (immutable) */ __webpack_exports__["install"] = install;
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 
 
 function consume(resource) {
@@ -220,20 +217,8 @@ function use(resource) {
   };
 }
 
-function _supply(Vue, options) {
-  return new Vue(_extends({
-    extends: __WEBPACK_IMPORTED_MODULE_0__resource_supply__["a" /* default */]
-  }, options));
-}
-
-var supply = function supply() {
-  return null;
-};
-
 function install(Vue) {
-  supply = function supply(options) {
-    return _supply(Vue, options);
-  };
+  // Nothing yet
 }
 
 
@@ -244,7 +229,7 @@ function install(Vue) {
 // Plugin
 var plugin = {
   /* eslint-disable no-undef */
-  version: "0.0.2",
+  version: "0.1.0",
   install: install
 };
 
