@@ -26,14 +26,6 @@ import VueSupply from 'vue-supply'
 Vue.use(VueSupply)
 ```
 
-## Distribution import
-
-```javascript
-import VueSupply from 'vue-supply/dist/vue-supply.common'
-
-Vue.use(VueSupply)
-```
-
 ## Browser
 
 ```html
@@ -44,15 +36,6 @@ Vue.use(VueSupply)
 The plugin should be auto-installed. If not, you can install it manually with the instructions below.
 
 ```javascript
-Vue.use(VueSupply)
-```
-
-## Source import
-
-```javascript
-import Vue from 'vue'
-import VueSupply from 'vue-supply/src'
-
 Vue.use(VueSupply)
 ```
 

@@ -17,12 +17,5 @@ module.exports = merge(base, {
     // With their package name
     // Example: 'lodash': 'lodash'
   },
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: true,
-      },
-      mangle: false,
-    }),
-  ],
+  devtool: 'source-map',
 })
