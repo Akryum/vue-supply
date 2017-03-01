@@ -1,4 +1,4 @@
-import ResourceSupply from './resource-supply'
+import Supply from './resource-supply'
 
 export function consume (resource) {
   resource.grasp()
@@ -16,21 +16,12 @@ export function use (resource) {
   }
 }
 
-function _supply (Vue, options) {
-  return new Vue({
-    extends: ResourceSupply,
-    ...options,
-  })
-}
-
-export let supply = () => null
-
 export function install (Vue) {
-  supply = (options) => _supply(Vue, options)
+  // Nothing yet
 }
 
 export {
-  ResourceSupply,
+  Supply,
 }
 
 /* -- Plugin definition & Auto-install -- */

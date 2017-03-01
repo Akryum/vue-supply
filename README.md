@@ -1,7 +1,11 @@
-# vue-supply
+<p align="center"><img src="logo.png"/></p>
 
-[![npm](https://img.shields.io/npm/v/vue-supply.svg) ![npm](https://img.shields.io/npm/dm/vue-supply.svg)](https://www.npmjs.com/package/vue-supply)
-[![vue2](https://img.shields.io/badge/vue-2.x-brightgreen.svg)](https://vuejs.org/)
+<h1 align="center">vue-supply</h1>
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/vue-supply"><img src="https://img.shields.io/npm/v/vue-supply.svg"/> <img src="https://img.shields.io/npm/dm/vue-supply.svg"/></a>
+  <a href="https://vuejs.org/"><img src="https://img.shields.io/badge/vue-2.x-brightgreen.svg"/></a>
+</p>
 
 Create resources that can automatically be activated and deactivated when used (like subscriptions)
 
@@ -46,9 +50,10 @@ A resource supply is a Vue instance which is responsible for managing a piece of
 It is created with the `supply` function:
 
 ```javascript
-import { supply } from 'vue-supply'
+import { Supply } from 'vue-supply'
 
-export default supply({
+export default new Vue({
+  extends: Supply,
   // Vue options here
 })
 ```
@@ -63,7 +68,8 @@ The resource supply will emit a `consumers` event with the count when it changes
 The resource is active if it has one or more `consumers`. When it becomes active, it calls the `activate` method, which you should override in the definition:
 
 ```javascript
-export default supply({
+export default new Vue({
+  extends: Supply,
   methods: {
     activate () {
       // Subscribe
@@ -85,7 +91,8 @@ TestResource.$on('active', (isActive) => {
 And when there are no more consumer for the resource, the `deactivate` method is called:
 
 ```javascript
-export default supply({
+export default new Vue({
+  extends: Supply,
   methods: {
     activate () {
       // Subscribe
@@ -204,7 +211,8 @@ A loading system is included in the resource supplies. Change the `loading` inte
 You should change the `loading` property inside the `activate` and `deactive` methods:
 
 ```javascript
-export default supply({
+export default new Vue({
+  extends: Supply,
   methods: {
     activate () {
       console.log('subscribing...')
@@ -259,9 +267,10 @@ release()
 Create a resource supply:
 
 ```javascript
-import { supply } from 'vue-supply'
+import { Supply } from 'vue-supply'
 
-export default supply({
+export default new Vue({
+  extends: Supply,
   data () {
     return {
       someData: null,
