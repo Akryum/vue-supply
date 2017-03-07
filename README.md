@@ -65,9 +65,9 @@ Vue.use(VueSupply)
 
 # Usage
 
-A resource supply is a Vue instance which is responsible for managing a piece of dynamic data (for example, a Meteor, GraphQL or Firebase subscription with data that may change and update from the server). It has an deactivated state (default), and an activated state when the data should be updated (for example, a subscription running).
+A supply is a Vue instance which is responsible for managing a piece of dynamic data (for example, a Meteor, GraphQL or Firebase subscription with data that may change and update from the server). It has an deactivated state (default), and an activated state when the data should be updated (for example, when a subscription is running).
 
-It is created with the `supply` function:
+To create a supply, create a new Vue instance extending the `Supply` definition:
 
 ```javascript
 import { Supply } from 'vue-supply'
@@ -78,14 +78,14 @@ export default new Vue({
 })
 ```
 
-The two methods when using the resource are:
+The two methods when using the supply are:
 
- - `resource.grasp()` wich increment `resource.consumers` by `1`
- - `resource.release()` wich decrement `resource.consumers` by `1`
+ - `supply.grasp()` wich increment `supply.consumers` by `1`
+ - `supply.release()` wich decrement `supply.consumers` by `1`
 
-The resource supply will emit a `consumers` event with the count when it changes.
+The supply will emit a `consumers` event with the count when it changes.
 
-The resource is active if it has one or more `consumers`. When it becomes active, it calls the `activate` method, which you should override in the definition:
+The supply is active if it has one or more `consumers`. When it becomes active, it calls the `activate` method, which you should override in the definition:
 
 ```javascript
 export default new Vue({
@@ -98,7 +98,7 @@ export default new Vue({
 })
 ```
 
-Also, the `active` event is emitted on the resource, with a `true` boolean argument, and the `is-active` event.
+Also, the `active` event is emitted on the supply, with a `true` boolean argument, and the `is-active` event.
 
 ```javascript
 import TestResource from 'supply/test-resource'
@@ -108,7 +108,7 @@ TestResource.$on('active', (isActive) => {
 })
 ```
 
-And when there are no more consumer for the resource, the `deactivate` method is called:
+And when there are no more consumer for the supply, the `deactivate` method is called:
 
 ```javascript
 export default new Vue({
@@ -124,11 +124,11 @@ export default new Vue({
 })
 ```
 
-Add a mixin with `use(resource)` to automatically `grasp` and `release` the supply when the component is created and destroyed.
+Add a mixin with `use(supply)` to automatically `grasp` and `release` the supply when the component is created and destroyed.
 
-Also, the `active` event is emitted on the resource, with a `false` boolean argument, and the `is-not-active` event.
+Also, the `active` event is emitted on the supply, with a `false` boolean argument, and the `is-not-active` event.
 
-Now to activate or deactivate the resource supply, use the `grasp` and `release` methods where you need to access the resource:
+Now to activate or deactivate the supply, use the `grasp` and `release` methods where you need to access the supply:
 
 ```javascript
 TestResource.grasp()
@@ -136,7 +136,7 @@ console.log(TestResource.someData)
 TestResource.release()
 ```
 
-There is a `active` computed boolean available that changes when the resource supply is activated or deactivated:
+There is a `active` computed boolean available that changes when the supply is activated or deactivated:
 
 ```javascript
 export default {
@@ -148,11 +148,11 @@ export default {
 }
 ```
 
-You can also use the `resource.ensureActive()` method which return a promise that resolves as soon as the resource supply is activated (or immediatly if it is already):
+You can also use the `supply.ensureActive()` method which return a promise that resolves as soon as the supply is activated (or immediatly if it is already):
 
 ```javascript
 TestResource.ensureActive().then(() => {
-  // The resource supply is active
+  // The supply is active
 })
 ```
 
@@ -177,7 +177,7 @@ export default {
 }
 ```
 
-Then you can use the resource data inside computed properties or inside methods:
+Then you can use the supply data inside computed properties or inside methods:
 
 ```javascript
 // Use the values in computed properties
@@ -188,14 +188,14 @@ computed: {
 },
 ```
 
-Inside a vuex store, you can use the resource data inside getters:
+Inside a vuex store, you can use the supply data inside getters:
 
 ```javascript
 import TestResource from 'test-supply'
 
 export default {
   getters: {
-    // Use the resource data in getters
+    // Use the supply data in getters
     'my-getter': state => TestResource.someData + state.something,
   },
 }
@@ -223,9 +223,9 @@ Or with the mixins and the `use` function inside components using the getter (se
 
 ## Asynchronous data
 
-A loading system is included in the resource supplies. Change the `loading` integer property:
+A loading system is included in the supply supplies. Change the `loading` integer property:
 
- - `0` means the resource is ready to be consumed (for example, data is loaded). This is the default value.
+ - `0` means the supply is ready to be consumed (for example, data is loaded). This is the default value.
  - `1` or more means there is loading in progress
 
 You should change the `loading` property inside the `activate` and `deactive` methods:
@@ -262,29 +262,29 @@ computed: {
 
 There are the `ready` (with a boolean argument), `is-ready` and `is-not-ready` events.
 
-You can also use the `resource.ensureReady()` method which return a promise that resolves as soon as the resource supply is ready (or immediatly if it is already):
+You can also use the `supply.ensureReady()` method which return a promise that resolves as soon as the supply is ready (or immediatly if it is already):
 
 ```javascript
 TestResource.ensureReady().then(() => {
- // The resource supply is ready
+ // The supply is ready
 })
 ```
 
-There is a useful function, `consume`, which comes in handy when you only need to use the resource periodically. It both graspes and wait for ready and return a `release` function:
+There is a useful function, `consume`, which comes in handy when you only need to use the supply periodically. It both graspes and wait for ready and return a `release` function:
 
 ```javascript
 import { consume } from 'vue-supply'
-// This will grasp and wait for the resource to be 'ready'
+// This will grasp and wait for the supply to be 'ready'
 const release = await consume(TestResource)
-// Count of active resource consumers
+// Count of active supply consumers
 console.log('consumers', TestResource.consumers)
-// When you are done with the resource, release it
+// When you are done with the supply, release it
 release()
 ```
 
 # Example
 
-Create a resource supply:
+Create a supply:
 
 ```javascript
 import { Supply } from 'vue-supply'
@@ -315,7 +315,7 @@ export default new Vue({
 })
 ```
 
-Use the resource supply in components:
+Use the supply in components:
 
 ```javascript
 import { use } from 'vue-supply'
@@ -344,7 +344,7 @@ import TestResource from 'test-supply'
 
 export default {
   getters: {
-    // Use the resource data in getters
+    // Use the supply data in getters
     'my-getter': () => TestResource.someData,
   },
   actions: {
@@ -361,12 +361,12 @@ export default {
     },
 
     async 'consume-action' ({ commit }) {
-      // This will wait for the resource to be 'ready'
+      // This will wait for the supply to be 'ready'
       const release = await consume(TestResource)
-      // Count of active resource consumers
+      // Count of active supply consumers
       console.log('consumers', TestResource.consumers)
       commit('my-commit', TestResource.someData)
-      // When you are done with the resource, release it
+      // When you are done with the supply, release it
       release()
     },
   },
