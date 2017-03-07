@@ -11,7 +11,7 @@ Create resources that can automatically be activated and deactivated when used (
 
 # Table of contents
 
-- [Why do I need this?](#why_do_i_need_this)
+- [Why do I need this?](#why-do-i-need-this)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Example](#example)
