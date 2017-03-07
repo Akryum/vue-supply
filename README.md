@@ -9,11 +9,31 @@
 
 Create resources that can automatically be activated and deactivated when used (like subscriptions)
 
-## Table of contents
+# Table of contents
 
+- [Why do I need this?](#why_do_i_need_this)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Example](#example)
+
+# Why do I need this?
+
+Efficiently managing reactive and living data from an external source can become difficult in a large app or when using [vuex](https://github.com/vuejs/vuex/). With `vue-supply`, you can easily consume data and automatically activate or deactivate subscriptions.
+
+## What kind of data?
+
+`vue-supply` is suitable for any kind of reactive and realtime data. For example:
+
+- [meteor](https://www.meteor.com/) reactive data (tracker, minimongo...) and realtime subscriptions/publications
+- [apollo](http://www.apollodata.com/) GraphQL subscriptions (using websockets)
+- [firebase](https://firebase.google.com/) realtime subscriptions
+- ...
+
+## How does it work?
+
+With `vue-supply`, you create Vue instances extending the `Supply` definition. You then define two methods: `activate` and `deactivate`. For example, you can subscribe to a realtime publication in the `activate` method and destroy this subscription in the `deactivate` method. When you will use this `Supply` in your components (called 'consumers'), it will automatically activate itself when it is first used (with the `grasp` method) or deactivate itself when no component use it anymore (with the `release` method). You can also easily store the realtime data inside the `Supply` and access it in the consumer components or in vuex getters. Anywhere in your code, you can wait for a `Supply` to be activated with the `ensureActive` method.
+
+`Supply` also understands the notion of loading the data: when your subscription is being processed, just increment the `loading` property. When it's ready, decrement `loading`. If all the operations are done (which means that `loading` value is `0`), the `Supply` will emit the `is-ready` event you can listen to. You can also use the `ready` property directly in your templates (or somewhere else). There is also a `ensureReady` method that waits for the `Supply` to be ready.
 
 # Installation
 
