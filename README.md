@@ -86,7 +86,7 @@ The two methods when using the supply are:
 To activate or deactivate the supply, use the `grasp` and `release` methods where you need to access the supply:
 
 ```javascript
-import TestResource from 'suppyl/test-resource'
+import TestResource from 'supply/test-resource'
 
 console.log(TestResource.consumers) // 0
 TestResource.grasp()
@@ -140,11 +140,13 @@ Also, the `active` event is emitted on the supply, with a `false` boolean argume
 There is a `active` computed boolean available that changes when the supply is activated or deactivated:
 
 ```javascript
+import TestResource from 'supply/test-resource'
+
 export default {
   computed: {
     isResourceUsed () {
       return TestResource.active
-    }
+    },
   },
 }
 ```
@@ -171,7 +173,7 @@ export default {
   computed: {
     answer () {
       return TestResource.someData
-    }
+    },
   },
 
   // ...
@@ -185,7 +187,7 @@ Then you can use the supply data inside computed properties or inside methods:
 computed: {
   answer () {
     return TestResource.someData
-  }
+  },
 },
 ```
 
@@ -232,6 +234,8 @@ A loading system is included in the supply supplies. Change the `loading` intege
 You should change the `loading` property inside the `activate` and `deactive` methods:
 
 ```javascript
+import { Supply } from 'vue-supply'
+
 export default new Vue({
   extends: Supply,
   methods: {
@@ -253,12 +257,16 @@ export default new Vue({
 You can get the loading state with the `ready` computed property, a boolean which is `true` when there are no loading in progress. It can directly used inside computed properties:
 
 ```javascript
-// Use the values in computed properties
-computed: {
-  isDataReady () {
-    return TestResource.ready
-  }
-},
+import TestResource from 'supply/test-resource'
+
+export default {
+  // Use the values in computed properties
+  computed: {
+    isDataReady () {
+      return TestResource.ready
+    },
+  },
+}
 ```
 
 There are the `ready` (with a boolean argument), `is-ready` and `is-not-ready` events.
@@ -275,6 +283,7 @@ There is a useful function, `consume`, which comes in handy when you only need t
 
 ```javascript
 import { consume } from 'vue-supply'
+import TestResource from 'supply/test-resource'
 // This will grasp and wait for the supply to be 'ready'
 const release = await consume(TestResource)
 // Count of active supply consumers
