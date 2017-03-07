@@ -83,6 +83,19 @@ The two methods when using the supply are:
  - `supply.grasp()` wich increment `supply.consumers` by `1`
  - `supply.release()` wich decrement `supply.consumers` by `1`
 
+To activate or deactivate the supply, use the `grasp` and `release` methods where you need to access the supply:
+
+```javascript
+import TestResource from 'suppyl/test-resource'
+
+console.log(TestResource.consumers) // 0
+TestResource.grasp()
+console.log(TestResource.consumers) // 1
+console.log(TestResource.someData) // Access the data
+TestResource.release()
+console.log(TestResource.consumers) // 0
+```
+
 The supply will emit a `consumers` event with the count when it changes.
 
 The supply is active if it has one or more `consumers`. When it becomes active, it calls the `activate` method, which you should override in the definition:
@@ -101,8 +114,6 @@ export default new Vue({
 Also, the `active` event is emitted on the supply, with a `true` boolean argument, and the `is-active` event.
 
 ```javascript
-import TestResource from 'supply/test-resource'
-
 TestResource.$on('active', (isActive) => {
   // Do something
 })
@@ -124,17 +135,7 @@ export default new Vue({
 })
 ```
 
-Add a mixin with `use(supply)` to automatically `grasp` and `release` the supply when the component is created and destroyed.
-
 Also, the `active` event is emitted on the supply, with a `false` boolean argument, and the `is-not-active` event.
-
-Now to activate or deactivate the supply, use the `grasp` and `release` methods where you need to access the supply:
-
-```javascript
-TestResource.grasp()
-console.log(TestResource.someData)
-TestResource.release()
-```
 
 There is a `active` computed boolean available that changes when the supply is activated or deactivated:
 
@@ -156,7 +157,7 @@ TestResource.ensureActive().then(() => {
 })
 ```
 
-Inside a component, add a mixin with the `use` function:
+Inside a component, add a mixin with `use(supply)` to automatically `grasp` and `release` the supply when the component is created and destroyed:
 
 ```javascript
 import { use } from 'vue-supply'
