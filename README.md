@@ -14,7 +14,7 @@ Create resources that can automatically be activated and deactivated when used (
 - [Why do I need this?](#why-do-i-need-this)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Example](#example)
+- [Examples](#examples)
 
 # Why do I need this?
 
@@ -292,7 +292,9 @@ console.log('consumers', TestResource.consumers)
 release()
 ```
 
-# Example
+# Examples
+
+## Basics
 
 Create a supply:
 
@@ -378,6 +380,59 @@ export default {
       commit('my-commit', TestResource.someData)
       // When you are done with the supply, release it
       release()
+    },
+  },
+}
+```
+
+## Meteor
+
+```javascript
+import { Supply } from 'vue-supply'
+import { Messages } from '../collections'
+export default new Vue({
+  data () {
+    return {
+      messageList: [],
+    }
+  },
+  // Realtime data from Meteor
+  // special option provided by vue-meteor-tracker
+  meteor: {
+    messageList () {
+      return Messages.find({}, {
+        $sort: { date: -1 },
+      })
+    },
+  },
+  // Automatic activation
+  methods: {
+    activate () {
+      // Meteor subscription
+      // Special method provided by vue-meteor-tracker
+      this.messagesSub = this.$subscribe('private-messages')
+    },
+    deactivate () {
+      // Special method provided by vue-meteor-tracker
+      this.$stopHandle(this.messagesSub)
+    },
+  },
+})
+```
+
+Use the Supply in a component:
+
+```javascript
+import { use } from 'vue-supply'
+import PrivateMessages from 'supplies/private-messages'
+
+export default {
+  // Will automatically start and stop the necessary subscriptions
+  mixins: [use(PrivateMessages)],
+
+  computed: {
+    privateMessages () {
+      return PrivateMessages.messageList
     },
   },
 }
