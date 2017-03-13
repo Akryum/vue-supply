@@ -73,18 +73,30 @@ module.exports =
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = {
+  // Help third-party integration know it's a Supply
+  // to provide automatic activation and helpers if needed
+  isSupply: true,
+
   data: function data() {
     return {
+      // Number of components or others that declared using this supply
       consumers: 0,
+      // Asynchronous data loading management
+      // 0 = loaded
+      // 1+ = currently loading
       loading: 0
     };
   },
 
 
   computed: {
+    // Has one or more active consumers
     active: function active() {
       return this.consumers > 0;
     },
+
+
+    // Is not loading data
     ready: function ready() {
       return this.loading === 0;
     }
@@ -134,18 +146,29 @@ module.exports =
       this.handleConsumersChange(val, oldVal);
       this.$emit('consumers', val, oldVal);
     },
+
+
+    // Declare using this Supply
+    // so that it can start subscriptions
     grasp: function grasp() {
       this.consumers++;
       if (this.consumers === 1) {
         this._activate();
       }
     },
+
+    // Declare no longer using this Supply
+    // so that it can potentially free subscriptions
     release: function release() {
       this.consumers--;
       if (this.consumers === 0) {
         this._deactivate();
       }
     },
+
+
+    // Waits for the Supply to be used by something
+    // Resolves immediatly if already active
     ensureActive: function ensureActive() {
       var _this = this;
 
@@ -157,6 +180,9 @@ module.exports =
         }
       });
     },
+
+    // Waits for the Supply to be ready (no loading in progress)
+    // Resolves immediatly if already ready
     ensureReady: function ensureReady() {
       var _this2 = this;
 
@@ -169,10 +195,10 @@ module.exports =
       });
     },
     activate: function activate() {
-      // To Override
+      // To Override with subscriptions
     },
     deactivate: function deactivate() {
-      // To Override
+      // To Override with unscriptions
     },
     handleReadyChange: function handleReadyChange(val) {
       // To Override
@@ -199,6 +225,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (immutable) */ __webpack_exports__["install"] = install;
 
 
+// For periodically using a Supply
+// Grasp the Supply and waits for it to be ready
 function consume(resource) {
   resource.grasp();
   return resource.ensureReady().then(function () {
@@ -206,6 +234,8 @@ function consume(resource) {
   });
 }
 
+// Declare using a Supply
+// Automatically activateing & deactivating it when no longer used
 function use(resource) {
   return {
     created: function created() {
@@ -229,7 +259,7 @@ function install(Vue) {
 // Plugin
 var plugin = {
   /* eslint-disable no-undef */
-  version: "0.1.0",
+  version: "0.1.1",
   install: install
 };
 
