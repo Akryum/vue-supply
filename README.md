@@ -80,8 +80,8 @@ export default new Vue({
 
 The two methods when using the supply are:
 
- - `supply.grasp()` wich increment `supply.consumers` by `1`
- - `supply.release()` wich decrement `supply.consumers` by `1`
+ - `supply.grasp()` which increments `supply.consumers` by `1`
+ - `supply.release()` which decrements `supply.consumers` by `1`
 
 To activate or deactivate the supply, use the `grasp` and `release` methods where you need to access the supply:
 
