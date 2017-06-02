@@ -397,8 +397,6 @@ import base from './base'
 import { Items } from '../api/collections'
 
 export default {
-  name: 'Items',
-
   extends: base,
 
   data () {
