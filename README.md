@@ -226,6 +226,26 @@ export default {
 }
 ```
 
+Before creating the Vuex store, transform the options with the `injectSupply(options, cache)` method:
+
+```javascript
+import { injectSupply } from 'vue-supply'
+
+const supplyCache = {}
+const suppliedStoreOptions = injectSupply(storeOptions, supplyCache)
+
+const store = new Vuex.Store(suppliedStoreOptions)
+```
+
+Provide the supply cache to the root Vue instance so that the supplies created for the store are reused in the components:
+
+```javascript
+new Vue({
+  // ...
+  supplyCache,
+}),
+```
+
 Then to activate/deactivate the supply, you can either call the `grasp` and `release` methods inside actions:
 
 ```javascript
@@ -406,9 +426,8 @@ export default {
 Create a supply:
 
 ```javascript
-import { Supply } from 'vue-supply'
 
-export default new Vue({
+export default {
   extends: Supply,
   data () {
     return {
@@ -431,23 +450,30 @@ export default new Vue({
       console.log('unsubscribing...')
     },
   },
-})
+}
+```
+
+Register the supply:
+
+```javascript
+import { register } from 'vue-supply'
+import TestResource from './supply/test-resource'
+register('TestResource', TestResource)
 ```
 
 Use the supply in components:
 
 ```javascript
 import { use } from 'vue-supply'
-import TestResource from 'test-supply'
 
 export default {
   // This component now uses TestResource
-  mixins: [use(TestResource)],
+  mixins: [use('TestResource')],
 
   // Use the values in computed properties
   computed: {
     answer () {
-      return TestResource.someData
+      return this.$supply.TestResource.someData
     }
   },
 
@@ -458,89 +484,38 @@ export default {
 Or in the vuex store:
 
 ```javascript
-import { consume } from 'vue-supply'
-import TestResource from 'test-supply'
-
 export default {
-  getters: {
-    // Use the supply data in getters
-    'my-getter': () => TestResource.someData,
-  },
-  actions: {
-    'subscribe-action' () {
-      // Request usage in the store
-      // Ex: subscribing to a Meteor publication
-      TestResource.grasp()
-    },
+  supply: {
+    use: ['TestResource'],
+    inject: ({ TestResource }) => ({
+      getters: {
+        // Use the supply data in getters
+        'my-getter': () => TestResource.someData,
+      },
+      actions: {
+        'subscribe-action' () {
+          // Request usage in the store
+          // Ex: subscribing to a Meteor publication
+          TestResource.grasp()
+        },
 
-    'unsubscribe-action' () {
-      // No longer used in the store
-      // Ex: unsubscribing from a Meteor publication
-      TestResource.release()
-    },
+        'unsubscribe-action' () {
+          // No longer used in the store
+          // Ex: unsubscribing from a Meteor publication
+          TestResource.release()
+        },
 
-    async 'consume-action' ({ commit }) {
-      // This will wait for the supply to be 'ready'
-      const release = await consume(TestResource)
-      // Count of active supply consumers
-      console.log('consumers', TestResource.consumers)
-      commit('my-commit', TestResource.someData)
-      // When you are done with the supply, release it
-      release()
-    },
-  },
-}
-```
-
-## Meteor
-
-```javascript
-import { Supply } from 'vue-supply'
-import { Messages } from '../collections'
-export default new Vue({
-  data () {
-    return {
-      messageList: [],
-    }
-  },
-  // Realtime data from Meteor
-  // special option provided by vue-meteor-tracker
-  meteor: {
-    messageList () {
-      return Messages.find({}, {
-        $sort: { date: -1 },
-      })
-    },
-  },
-  // Automatic activation
-  methods: {
-    activate () {
-      // Meteor subscription
-      // Special method provided by vue-meteor-tracker
-      this.messagesSub = this.$subscribe('private-messages')
-    },
-    deactivate () {
-      // Special method provided by vue-meteor-tracker
-      this.$stopHandle(this.messagesSub)
-    },
-  },
-})
-```
-
-Use the Supply in a component:
-
-```javascript
-import { use } from 'vue-supply'
-import PrivateMessages from 'supplies/private-messages'
-
-export default {
-  // Will automatically start and stop the necessary subscriptions
-  mixins: [use(PrivateMessages)],
-
-  computed: {
-    privateMessages () {
-      return PrivateMessages.messageList
-    },
+        async 'consume-action' ({ commit }) {
+          // This will wait for the supply to be 'ready'
+          const release = await consume(TestResource)
+          // Count of active supply consumers
+          console.log('consumers', TestResource.consumers)
+          commit('my-commit', TestResource.someData)
+          // When you are done with the supply, release it
+          release()
+        },
+      },
+    }),
   },
 }
 ```
