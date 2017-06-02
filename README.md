@@ -20,6 +20,8 @@ Create resources that can automatically be activated and deactivated when used (
 
 Efficiently managing reactive and living data from an external source can become difficult in a large app or when using [vuex](https://github.com/vuejs/vuex/). With `vue-supply`, you can easily consume data and automatically activate or deactivate subscriptions.
 
+[The Vue+Meteor demo project](https://github.com/Akryum/vue-meteor-demo) demonstrate how to use Meteor reactive data easily with `vue-supply` inside components and a vuex store.
+
 ## What kind of data?
 
 `vue-supply` is suitable for any kind of reactive and realtime data. For example:

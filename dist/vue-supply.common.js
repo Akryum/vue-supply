@@ -1,14 +1,5 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else if(typeof exports === 'object')
-		exports["VueSupply"] = factory();
-	else
-		root["VueSupply"] = factory();
-})(this, function() {
-return /******/ (function(modules) { // webpackBootstrap
+module.exports =
+/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -73,7 +64,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -81,21 +72,294 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("/* harmony default export */ __webpack_exports__[\"a\"] = ({\n  // Help third-party integration know it's a Supply\n  // to provide automatic activation and helpers if needed\n  isSupply: true,\n\n  data: function data() {\n    return {\n      // Number of components or others that declared using this supply\n      consumers: 0,\n      // Asynchronous data loading management\n      // 0 = loaded\n      // 1+ = currently loading\n      loading: 0\n    };\n  },\n\n\n  computed: {\n    // Has one or more active consumers\n    active: function active() {\n      return this.consumers > 0;\n    },\n\n\n    // Is not loading data\n    ready: function ready() {\n      return this.loading === 0;\n    }\n  },\n\n  watch: {\n    consumers: function consumers(val, oldVal) {\n      if (val !== oldVal) {\n        this._handleConsumersChange(val, oldVal);\n      }\n    },\n    ready: function ready(val, oldVal) {\n      if (val !== oldVal) {\n        this._handleReadyChange(val);\n      }\n    },\n    activate: function activate(val, oldVal) {\n      if (val !== oldVal) {\n        this._handleActiveChange(val);\n      }\n    }\n  },\n\n  methods: {\n    _activate: function _activate() {\n      this.activate();\n      this.$emit('is-active');\n    },\n    _deactivate: function _deactivate() {\n      this.deactivate();\n      this.$emit('is-not-active');\n    },\n    _handleReadyChange: function _handleReadyChange(val) {\n      this.handleReadyChange(val);\n      this.$emit('ready', val);\n      if (val) {\n        this.$emit('is-ready');\n      } else {\n        this.$emit('is-not-ready');\n      }\n    },\n    _handleActiveChange: function _handleActiveChange(val) {\n      this.handleActiveChange(val);\n      this.$emit('active', val);\n    },\n    _handleConsumersChange: function _handleConsumersChange(val, oldVal) {\n      this.handleConsumersChange(val, oldVal);\n      this.$emit('consumers', val, oldVal);\n    },\n\n\n    // Declare using this Supply\n    // so that it can start subscriptions\n    grasp: function grasp() {\n      this.consumers++;\n      if (this.consumers === 1) {\n        this._activate();\n      }\n    },\n\n    // Declare no longer using this Supply\n    // so that it can potentially free subscriptions\n    release: function release() {\n      this.consumers--;\n      if (this.consumers === 0) {\n        this._deactivate();\n      }\n    },\n\n\n    // Waits for the Supply to be used by something\n    // Resolves immediatly if already active\n    ensureActive: function ensureActive() {\n      var _this = this;\n\n      return new Promise(function (resolve) {\n        if (_this.active) {\n          resolve();\n        } else {\n          _this.$once('is-active', resolve);\n        }\n      });\n    },\n\n    // Waits for the Supply to be ready (no loading in progress)\n    // Resolves immediatly if already ready\n    ensureReady: function ensureReady() {\n      var _this2 = this;\n\n      return new Promise(function (resolve) {\n        if (_this2.ready) {\n          resolve();\n        } else {\n          _this2.$once('is-ready', resolve);\n        }\n      });\n    },\n    activate: function activate() {\n      // To Override with subscriptions\n    },\n    deactivate: function deactivate() {\n      // To Override with unsubscriptions\n    },\n    handleReadyChange: function handleReadyChange(val) {\n      // To Override\n    },\n    handleActiveChange: function handleActiveChange(val) {\n      // To Override\n    },\n    handleConsumersChange: function handleConsumersChange(val, oldval) {\n      // To Override\n    }\n  }\n});//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9zcmMvcmVzb3VyY2Utc3VwcGx5LmpzP2RhNWUiXSwibmFtZXMiOlsiaXNTdXBwbHkiLCJkYXRhIiwiY29uc3VtZXJzIiwibG9hZGluZyIsImNvbXB1dGVkIiwiYWN0aXZlIiwicmVhZHkiLCJ3YXRjaCIsInZhbCIsIm9sZFZhbCIsIl9oYW5kbGVDb25zdW1lcnNDaGFuZ2UiLCJfaGFuZGxlUmVhZHlDaGFuZ2UiLCJhY3RpdmF0ZSIsIl9oYW5kbGVBY3RpdmVDaGFuZ2UiLCJtZXRob2RzIiwiX2FjdGl2YXRlIiwiJGVtaXQiLCJfZGVhY3RpdmF0ZSIsImRlYWN0aXZhdGUiLCJoYW5kbGVSZWFkeUNoYW5nZSIsImhhbmRsZUFjdGl2ZUNoYW5nZSIsImhhbmRsZUNvbnN1bWVyc0NoYW5nZSIsImdyYXNwIiwicmVsZWFzZSIsImVuc3VyZUFjdGl2ZSIsIlByb21pc2UiLCJyZXNvbHZlIiwiJG9uY2UiLCJlbnN1cmVSZWFkeSIsIm9sZHZhbCJdLCJtYXBwaW5ncyI6IkFBQUEseURBQWU7QUFDYjtBQUNBO0FBQ0FBLFlBQVUsSUFIRzs7QUFLYkMsTUFMYSxrQkFLTDtBQUNOLFdBQU87QUFDTDtBQUNBQyxpQkFBVyxDQUZOO0FBR0w7QUFDQTtBQUNBO0FBQ0FDLGVBQVM7QUFOSixLQUFQO0FBUUQsR0FkWTs7O0FBZ0JiQyxZQUFVO0FBQ1I7QUFDQUMsVUFGUSxvQkFFRTtBQUNSLGFBQU8sS0FBS0gsU0FBTCxHQUFpQixDQUF4QjtBQUNELEtBSk87OztBQU1SO0FBQ0FJLFNBUFEsbUJBT0M7QUFDUCxhQUFPLEtBQUtILE9BQUwsS0FBaUIsQ0FBeEI7QUFDRDtBQVRPLEdBaEJHOztBQTRCYkksU0FBTztBQUNMTCxhQURLLHFCQUNNTSxHQUROLEVBQ1dDLE1BRFgsRUFDbUI7QUFDdEIsVUFBSUQsUUFBUUMsTUFBWixFQUFvQjtBQUNsQixhQUFLQyxzQkFBTCxDQUE0QkYsR0FBNUIsRUFBaUNDLE1BQWpDO0FBQ0Q7QUFDRixLQUxJO0FBT0xILFNB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IGRlZmF1bHQge1xuICAvLyBIZWxwIHRoaXJkLXBhcnR5IGludGVncmF0aW9uIGtub3cgaXQncyBhIFN1cHBseVxuICAvLyB0byBwcm92aWRlIGF1dG9tYXRpYyBhY3RpdmF0aW9uIGFuZCBoZWxwZXJzIGlmIG5lZWRlZFxuICBpc1N1cHBseTogdHJ1ZSxcblxuICBkYXRhICgpIHtcbiAgICByZXR1cm4ge1xuICAgICAgLy8gTnVtYmVyIG9mIGNvbXBvbmVudHMgb3Igb3RoZXJzIHRoYXQgZGVjbGFyZWQgdXNpbmcgdGhpcyBzdXBwbHlcbiAgICAgIGNvbnN1bWVyczogMCxcbiAgICAgIC8vIEFzeW5jaHJvbm91cyBkYXRhIGxvYWRpbmcgbWFuYWdlbWVudFxuICAgICAgLy8gMCA9IGxvYWRlZFxuICAgICAgLy8gMSsgPSBjdXJyZW50bHkgbG9hZGluZ1xuICAgICAgbG9hZGluZzogMCxcbiAgICB9XG4gIH0sXG5cbiAgY29tcHV0ZWQ6IHtcbiAgICAvLyBIYXMgb25lIG9yIG1vcmUgYWN0aXZlIGNvbnN1bWVyc1xuICAgIGFjdGl2ZSAoKSB7XG4gICAgICByZXR1cm4gdGhpcy5jb25zdW1lcnMgPiAwXG4gICAgfSxcblxuICAgIC8vIElzIG5vdCBsb2FkaW5nIGRhdGFcbiAgICByZWFkeSAoKSB7XG4gICAgICByZXR1cm4gdGhpcy5sb2FkaW5nID09PSAwXG4gICAgfSxcbiAgfSxcblxuICB3YXRjaDoge1xuICAgIGNvbnN1bWVycyAodmFsLCBvbGRWYWwpIHtcbiAgICAgIGlmICh2YWwgIT09IG9sZFZhbCkge1xuICAgICAgICB0aGlzLl9oYW5kbGVDb25zdW1lcnNDaGFuZ2UodmFsLCBvbGRWYWwpXG4gICAgICB9XG4gICAgfSxcblxuICAgIHJlYWR5ICh2YWwsIG9sZFZhbCkge1xuICAgICAgaWYgKHZhbCAhPT0gb2xkVmFsKSB7XG4gICAgICAgIHRoaXMuX2hhbmRsZVJlYWR5Q2hhbmdlKHZhbClcbiAgICAgIH1cbiAgICB9LFxuXG4gICAgYWN0aXZhdGUgKHZhbCwgb2xkVmFsKSB7XG4gICAgICBpZiAodmFsICE9PSBvbGRWYWwpIHtcbiAgICAgICAgdGhpcy5faGFuZGxlQWN0aXZlQ2hhbmdlKHZhbClcbiAgICAgIH1cbiAgICB9LFxuICB9LFxuXG4gIG1ldGhvZHM6IHtcbiAgICBfYWN0aXZhdGUgKCkge1xuICAgICAgdGhpcy5hY3RpdmF0ZSgpXG4gICAgICB0aGlzLiRlbWl0KCdpcy1hY3RpdmUnKVxuICAgIH0sXG4gICAgX2RlYWN0aXZhdGUgKCkge1xuICAgICAgdGhpcy5kZWFjdGl2YXRlKClcbiAgICAgIHRoaXMuJGVtaXQoJ2lzLW5vdC1hY3RpdmUnKVxuICAgIH0sXG4gICAgX2hhbmRsZVJlYWR5Q2hhbmdlICh2YWwpIHtcbiAgICAgIHRoaXMuaGFuZGxlUmVhZHlDaGFuZ2UodmFsKVxuICAgICAgdGhpcy4kZW1pdCgncmVhZHknLCB2YWwpXG4gICAgICBpZiAodmFsKSB7XG4gICAgICAgIHRoaXMuJGVtaXQoJ2lzLXJlYWR5JylcbiAgICAgIH0gZWxzZSB7XG4gICAgICAgIHRoaXMuJGVtaXQoJ2lzLW5vdC1yZWFkeScpXG4gICAgICB9XG4gICAgfSxcbiAgICBfaGFuZGxlQWN0aXZlQ2hhbmdlICh2YWwpIHtcbiAgICAgIHRoaXMuaGFuZGxlQWN0aXZlQ2hhbmdlKHZhbClcbiAgICAgIHRoaXMuJGVtaXQoJ2FjdGl2ZScsIHZhbClcbiAgICB9LFxuICAgIF9oYW5kbGVDb25zdW1lcnNDaGFuZ2UgKHZhbCwgb2xkVmFsKSB7XG4gICAgICB0aGlzLmhhbmRsZUNvbnN1bWVyc0NoYW5nZSh2YWwsIG9sZFZhbClcbiAgICAgIHRoaXMuJGVtaXQoJ2NvbnN1bWVycycsIHZhbCwgb2xkVmFsKVxuICAgIH0sXG5cbiAgICAvLyBEZWNsYXJlIHVzaW5nIHRoaXMgU3VwcGx5XG4gICAgLy8gc28gdGhhdCBpdCBjYW4gc3RhcnQgc3Vic2NyaXB0aW9uc1xuICAgIGdyYXNwICgpIHtcbiAgICAgIHRoaXMuY29uc3VtZXJzICsrXG4gICAgICBpZiAodGhpcy5jb25zdW1lcnMgPT09IDEpIHtcbiAgICAgICAgdGhpcy5fYWN0aXZhdGUoKVxuICAgICAgfVxuICAgIH0sXG4gICAgLy8gRGVjbGFyZSBubyBsb25nZXIgdXNpbmcgdGhpcyBTdXBwbHlcbiAgICAvLyBzbyB0aGF0IGl0IGNhbiBwb3RlbnRpYWxseSBmcmVlIHN1YnNjcmlwdGlvbnNcbiAgICByZWxlYXNlICgpIHtcbiAgICAgIHRoaXMuY29uc3VtZXJzIC0tXG4gICAgICBpZiAodGhpcy5jb25zdW1lcnMgPT09IDApIHtcbiAgICAgICAgdGhpcy5fZGVhY3RpdmF0ZSgpXG4gICAgICB9XG4gICAgfSxcblxuICAgIC8vIFdhaXRzIGZvciB0aGUgU3VwcGx5IHRvIGJlIHVzZWQgYnkgc29tZXRoaW5nXG4gICAgLy8gUmVzb2x2ZXMgaW1tZWRpYXRseSBpZiBhbHJlYWR5IGFjdGl2ZVxuICAgIGVuc3VyZUFjdGl2ZSAoKSB7XG4gICAgICByZXR1cm4gbmV3IFByb21pc2UoKHJlc29sdmUpID0+IHtcbiAgICAgICAgaWYgKHRoaXMuYWN0aXZlKSB7XG4gICAgICAgICAgcmVzb2x2ZSgpXG4gICAgICAgIH0gZWxzZSB7XG4gICAgICAgICAgdGhpcy4kb25jZSgnaXMtYWN0aXZlJywgcmVzb2x2ZSlcbiAgICAgICAgfVxuICAgICAgfSlcbiAgICB9LFxuICAgIC8vIFdhaXRzIGZvciB0aGUgU3VwcGx5IHRvIGJlIHJlYWR5IChubyBsb2FkaW5nIGluIHByb2dyZXNzKVxuICAgIC8vIFJlc29sdmVzIGltbWVkaWF0bHkgaWYgYWxyZWFkeSByZWFkeVxuICAgIGVuc3VyZVJlYWR5ICgpIHtcbiAgICAgIHJldHVybiBuZXcgUHJvbWlzZSgocmVzb2x2ZSkgPT4ge1xuICAgICAgICBpZiAodGhpcy5yZWFkeSkge1xuICAgICAgICAgIHJlc29sdmUoKVxuICAgICAgICB9IGVsc2Uge1xuICAgICAgICAgIHRoaXMuJG9uY2UoJ2lzLXJlYWR5JywgcmVzb2x2ZSlcbiAgICAgICAgfVxuICAgICAgfSlcbiAgICB9LFxuXG4gICAgYWN0aXZhdGUgKCkge1xuICAgICAgLy8gVG8gT3ZlcnJpZGUgd2l0aCBzdWJzY3JpcHRpb25zXG4gICAgfSxcbiAgICBkZWFjdGl2YXRlICgpIHtcbiAgICAgIC8vIFRvIE92ZXJyaWRlIHdpdGggdW5zdWJzY3JpcHRpb25zXG4gICAgfSxcbiAgICBoYW5kbGVSZWFkeUNoYW5nZSAodmFsKSB7XG4gICAgICAvLyBUbyBPdmVycmlkZVxuICAgIH0sXG4gICAgaGFuZGxlQWN0aXZlQ2hhbmdlICh2YWwpIHtcbiAgICAgIC8vIFRvIE92ZXJyaWRlXG4gICAgfSxcbiAgICBoYW5kbGVDb25zdW1lcnNDaGFuZ2UgKHZhbCwgb2xkdmFsKSB7XG4gICAgICAvLyBUbyBPdmVycmlkZVxuICAgIH0sXG4gIH0sXG59XG5cblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gLi9zcmMvcmVzb3VyY2Utc3VwcGx5LmpzIl0sInNvdXJjZVJvb3QiOiIifQ==");
+/* harmony default export */ __webpack_exports__["a"] = ({
+  // Help third-party integration know it's a Supply
+  // to provide automatic activation and helpers if needed
+  isSupply: true,
+
+  data: function data() {
+    return {
+      // Number of components or others that declared using this supply
+      consumers: 0,
+      // Asynchronous data loading management
+      // 0 = loaded
+      // 1+ = currently loading
+      loading: 0
+    };
+  },
+
+
+  computed: {
+    // Has one or more active consumers
+    active: function active() {
+      return this.consumers > 0;
+    },
+
+
+    // Is not loading data
+    ready: function ready() {
+      return this.loading === 0;
+    }
+  },
+
+  watch: {
+    consumers: function consumers(val, oldVal) {
+      if (val !== oldVal) {
+        this._handleConsumersChange(val, oldVal);
+      }
+    },
+    ready: function ready(val, oldVal) {
+      if (val !== oldVal) {
+        this._handleReadyChange(val);
+      }
+    },
+    activate: function activate(val, oldVal) {
+      if (val !== oldVal) {
+        this._handleActiveChange(val);
+      }
+    }
+  },
+
+  methods: {
+    _activate: function _activate() {
+      this.activate();
+      this.$emit('is-active');
+    },
+    _deactivate: function _deactivate() {
+      this.deactivate();
+      this.$emit('is-not-active');
+    },
+    _handleReadyChange: function _handleReadyChange(val) {
+      this.handleReadyChange(val);
+      this.$emit('ready', val);
+      if (val) {
+        this.$emit('is-ready');
+      } else {
+        this.$emit('is-not-ready');
+      }
+    },
+    _handleActiveChange: function _handleActiveChange(val) {
+      this.handleActiveChange(val);
+      this.$emit('active', val);
+    },
+    _handleConsumersChange: function _handleConsumersChange(val, oldVal) {
+      this.handleConsumersChange(val, oldVal);
+      this.$emit('consumers', val, oldVal);
+    },
+
+
+    // Declare using this Supply
+    // so that it can start subscriptions
+    grasp: function grasp() {
+      this.consumers++;
+      if (this.consumers === 1) {
+        this._activate();
+      }
+    },
+
+    // Declare no longer using this Supply
+    // so that it can potentially free subscriptions
+    release: function release() {
+      this.consumers--;
+      if (this.consumers === 0) {
+        this._deactivate();
+      }
+    },
+
+
+    // Waits for the Supply to be used by something
+    // Resolves immediatly if already active
+    ensureActive: function ensureActive() {
+      var _this = this;
+
+      return new Promise(function (resolve) {
+        if (_this.active) {
+          resolve();
+        } else {
+          _this.$once('is-active', resolve);
+        }
+      });
+    },
+
+    // Waits for the Supply to be ready (no loading in progress)
+    // Resolves immediatly if already ready
+    ensureReady: function ensureReady() {
+      var _this2 = this;
+
+      return new Promise(function (resolve) {
+        if (_this2.ready) {
+          resolve();
+        } else {
+          _this2.$once('is-ready', resolve);
+        }
+      });
+    },
+    activate: function activate() {
+      // To Override with subscriptions
+    },
+    deactivate: function deactivate() {
+      // To Override with unsubscriptions
+    },
+    handleReadyChange: function handleReadyChange(val) {
+      // To Override
+    },
+    handleActiveChange: function handleActiveChange(val) {
+      // To Override
+    },
+    handleConsumersChange: function handleConsumersChange(val, oldval) {
+      // To Override
+    }
+  }
+});
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
-
-eval("var _typeof = typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; };\n\nvar g;\n\n// This works in non-strict mode\ng = function () {\n\treturn this;\n}();\n\ntry {\n\t// This works if eval is allowed (see CSP)\n\tg = g || Function(\"return this\")() || (1, eval)(\"this\");\n} catch (e) {\n\t// This works if the window reference is available\n\tif ((typeof window === \"undefined\" ? \"undefined\" : _typeof(window)) === \"object\") g = window;\n}\n\n// g can still be undefined, but nothing to do about it...\n// We return undefined, instead of nothing here, so it's\n// easier to handle this case. if(!global) { ...}\n\nmodule.exports = g;//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vKHdlYnBhY2spL2J1aWxkaW4vZ2xvYmFsLmpzPzM2OTgiXSwibmFtZXMiOlsiZyIsIkZ1bmN0aW9uIiwiZXZhbCIsImUiLCJ3aW5kb3ciLCJtb2R1bGUiLCJleHBvcnRzIl0sIm1hcHBpbmdzIjoiOztBQUFBLElBQUlBLENBQUo7O0FBRUE7QUFDQUEsSUFBSyxZQUFXO0FBQ2YsUUFBTyxJQUFQO0FBQ0EsQ0FGRyxFQUFKOztBQUlBLElBQUk7QUFDSDtBQUNBQSxLQUFJQSxLQUFLQyxTQUFTLGFBQVQsR0FBTCxJQUFrQyxDQUFDLEdBQUVDLElBQUgsRUFBUyxNQUFULENBQXRDO0FBQ0EsQ0FIRCxDQUdFLE9BQU1DLENBQU4sRUFBUztBQUNWO0FBQ0EsS0FBRyxRQUFPQyxNQUFQLHlDQUFPQSxNQUFQLE9BQWtCLFFBQXJCLEVBQ0NKLElBQUlJLE1BQUo7QUFDRDs7QUFFRDtBQUNBO0FBQ0E7O0FBRUFDLE9BQU9DLE9BQVAsR0FBaUJOLENBQWpCIiwiZmlsZSI6IjEuanMiLCJzb3VyY2VzQ29udGVudCI6WyJ2YXIgZztcclxuXHJcbi8vIFRoaXMgd29ya3MgaW4gbm9uLXN0cmljdCBtb2RlXHJcbmcgPSAoZnVuY3Rpb24oKSB7XHJcblx0cmV0dXJuIHRoaXM7XHJcbn0pKCk7XHJcblxyXG50cnkge1xyXG5cdC8vIFRoaXMgd29ya3MgaWYgZXZhbCBpcyBhbGxvd2VkIChzZWUgQ1NQKVxyXG5cdGcgPSBnIHx8IEZ1bmN0aW9uKFwicmV0dXJuIHRoaXNcIikoKSB8fCAoMSxldmFsKShcInRoaXNcIik7XHJcbn0gY2F0Y2goZSkge1xyXG5cdC8vIFRoaXMgd29ya3MgaWYgdGhlIHdpbmRvdyByZWZlcmVuY2UgaXMgYXZhaWxhYmxlXHJcblx0aWYodHlwZW9mIHdpbmRvdyA9PT0gXCJvYmplY3RcIilcclxuXHRcdGcgPSB3aW5kb3c7XHJcbn1cclxuXHJcbi8vIGcgY2FuIHN0aWxsIGJlIHVuZGVmaW5lZCwgYnV0IG5vdGhpbmcgdG8gZG8gYWJvdXQgaXQuLi5cclxuLy8gV2UgcmV0dXJuIHVuZGVmaW5lZCwgaW5zdGVhZCBvZiBub3RoaW5nIGhlcmUsIHNvIGl0J3NcclxuLy8gZWFzaWVyIHRvIGhhbmRsZSB0aGlzIGNhc2UuIGlmKCFnbG9iYWwpIHsgLi4ufVxyXG5cclxubW9kdWxlLmV4cG9ydHMgPSBnO1xyXG5cblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gKHdlYnBhY2spL2J1aWxkaW4vZ2xvYmFsLmpzIl0sInNvdXJjZVJvb3QiOiIifQ==");
-
-/***/ }),
-/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("Object.defineProperty(__webpack_exports__, \"__esModule\", { value: true });\n/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (immutable) */ __webpack_exports__[\"consume\"] = consume;\n/* harmony export (immutable) */ __webpack_exports__[\"use\"] = use;\n/* harmony export (immutable) */ __webpack_exports__[\"getResource\"] = getResource;\n/* harmony export (immutable) */ __webpack_exports__[\"register\"] = register;\n/* harmony export (immutable) */ __webpack_exports__[\"injectSupply\"] = injectSupply;\n/* harmony export (immutable) */ __webpack_exports__[\"install\"] = install;\n/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__resource_supply__ = __webpack_require__(0);\n/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, \"Supply\", function() { return __WEBPACK_IMPORTED_MODULE_0__resource_supply__[\"a\"]; });\nvar _typeof = typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; };\n\n\nvar Vue = void 0;\n\n// For periodically using a Supply\n// Grasp the Supply and waits for it to be ready\nfunction consume(resource) {\n  resource.grasp();\n  return resource.ensureReady().then(function () {\n    return resource.release;\n  });\n}\n\n// Declare using a Supply\n// Automatically activateing & deactivating it when no longer used\nfunction use(arg) {\n  var name = void 0;\n  return {\n    created: function created() {\n      var resource = void 0;\n      var def = arg;\n\n      if (typeof def === 'string') {\n        var _name = def;\n        def = defs[_name];\n        if (!def) {\n          throw Error('Supply \\'' + _name + '\\' not found. Did you register it?');\n        }\n      }\n\n      if (!def._isVue) {\n        var cache = this.$root._supplyCache = this.$root._supplyCache || {};\n        resource = getResource(def, cache);\n        name = def.name;\n      } else {\n        name = arg._uid;\n        resource = arg;\n      }\n\n      this.$supply = this.$supply || {};\n      this.$supply[name] = resource;\n\n      resource.grasp();\n    },\n    beforeDestroy: function beforeDestroy() {\n      var resource = arg._isVue ? arg : this.$supply[name];\n      if (resource) {\n        resource.release();\n      }\n    }\n  };\n}\n\nvar uid = 0;\n\nfunction getResource(def, cache) {\n  var name = def.name || '_' + uid++;\n  var resource = cache[name];\n  if (!resource) {\n    resource = cache[name] = new Vue(def);\n  }\n  return resource;\n}\n\nvar defs = {};\n\nfunction register(name, def) {\n  def.name = name;\n  defs[name] = def;\n}\n\nfunction injectSupply(storeOptions, cache) {\n  var result = storeOptions;\n  if (_typeof(storeOptions.supply) === 'object') {\n    var supplies = storeOptions.supply.use.reduce(function (dic, name) {\n      dic[name] = getResource(defs[name], cache);\n      return dic;\n    }, {});\n    var newOptions = storeOptions.supply.inject(supplies);\n    result = {};\n    for (var key in storeOptions) {\n      result[key] = Object.assign({}, storeOptions[key], newOptions[key]);\n    }\n    delete result.supply;\n  }\n\n  if (_typeof(storeOptions.modules) === 'object') {\n    for (var _key in storeOptions.modules) {\n      var module = storeOptions.modules[_key];\n      result.modules[_key] = injectSupply(module, cache);\n    }\n  }\n\n  return result;\n}\n\nfunction install(pVue) {\n  Vue = pVue;\n\n  Vue.mixin({\n    init: function init() {\n      if (this.$options.supplyCache) {\n        this._supplyCache = this.$options.supplyCache;\n      }\n    }\n  });\n}\n\n\n\n/* -- Plugin definition & Auto-install -- */\n/* You shouldn't have to modify the code below */\n\n// Plugin\nvar plugin = {\n  /* eslint-disable no-undef */\n  version: \"0.2.0\",\n  install: install\n};\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (plugin);\n\n// Auto-install\nvar GlobalVue = null;\nif (typeof window !== 'undefined') {\n  GlobalVue = window.Vue;\n} else if (typeof global !== 'undefined') {\n  GlobalVue = global.Vue;\n}\nif (GlobalVue) {\n  GlobalVue.use(plugin);\n}\n/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9zcmMvaW5kZXguanM/OTU1MiJdLCJuYW1lcyI6WyJWdWUiLCJjb25zdW1lIiwicmVzb3VyY2UiLCJncmFzcCIsImVuc3VyZVJlYWR5IiwidGhlbiIsInJlbGVhc2UiLCJ1c2UiLCJhcmciLCJuYW1lIiwiY3JlYXRlZCIsImRlZiIsImRlZnMiLCJFcnJvciIsIl9pc1Z1ZSIsImNhY2hlIiwiJHJvb3QiLCJfc3VwcGx5Q2FjaGUiLCJnZXRSZXNvdXJjZSIsIl91aWQiLCIkc3VwcGx5IiwiYmVmb3JlRGVzdHJveSIsInVpZCIsInJlZ2lzdGVyIiwiaW5qZWN0U3VwcGx5Iiwic3RvcmVPcHRpb25zIiwicmVzdWx0Iiwic3VwcGx5Iiwic3VwcGxpZXMiLCJyZWR1Y2UiLCJkaWMiLCJuZXdPcHRpb25zIiwiaW5qZWN0Iiwia2V5IiwiT2JqZWN0IiwiYXNzaWduIiwibW9kdWxlcyIsIm1vZHVsZSIsImluc3RhbGwiLCJwVnVlIiwibWl4aW4iLCJpbml0IiwiJG9wdGlvbnMiLCJzdXBwbHlDYWNoZSIsInBsdWdpbiIsInZlcnNpb24iLCJHbG9iYWxWdWUiLCJ3aW5kb3ciLCJnbG9iYWwiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7O0FBQUE7QUFDQSxJQUFJQSxZQUFKOztBQUVBO0FBQ0E7QUFDTyxTQUFTQyxPQUFULENBQWtCQyxRQUFsQixFQUE0QjtBQUNqQ0EsV0FBU0MsS0FBVDtBQUNBLFNBQU9ELFNBQVNFLFdBQVQsR0FBdUJDLElBQXZCLENBQTRCO0FBQUEsV0FBTUgsU0FBU0ksT0FBZjtBQUFBLEdBQTVCLENBQVA7QUFDRDs7QUFFRDtBQUNBO0FBQ08sU0FBU0MsR0FBVCxDQUFjQyxHQUFkLEVBQW1CO0FBQ3hCLE1BQUlDLGFBQUo7QUFDQSxTQUFPO0FBQ0xDLFdBREsscUJBQ007QUFDVCxVQUFJUixpQkFBSjtBQUNBLFVBQUlTLE1BQU1ILEdBQVY7O0FBRUEsVUFBSSxPQUFPRyxHQUFQLEtBQWUsUUFBbkIsRUFBNkI7QUFDM0IsWUFBTUYsUUFBT0UsR0FBYjtBQUNBQSxjQUFNQyxLQUFLSCxLQUFMLENBQU47QUFDQSxZQUFJLENBQUNFLEdBQUwsRUFBVTtBQUNSLGdCQUFNRSxvQkFBaUJKLEtBQWpCLHdDQUFOO0FBQ0Q7QUFDRjs7QUFFRCxVQUFJLENBQUNFLElBQUlHLE1BQVQsRUFBaUI7QUFDZixZQUFNQyxRQUFRLEtBQUtDLEtBQUwsQ0FBV0MsWUFBWCxHQUEwQixLQUFLRCxLQUFMLENBQVdDLFlBQVgsSUFBMkIsRUFBbkU7QUFDQWYsbUJBQVdnQixZQUFZUCxHQUFaLEVBQWlCSSxLQUFqQixDQUFYO0FBQ0FOLGVBQU9FLElBQUlGLElBQVg7QUFDRCxPQUpELE1BSU87QUFDTEEsZUFBT0QsSUFBSVcsSUFBWDtBQUNBakIsbUJBQVdNLEdBQVg7QUFDRDs7QUFFRCxXQUFLWSxPQUFMLEdBQWUsS0FBS0EsT0FBTCxJQUFnQixFQUEvQjtBQUNBLFdBQUtBLE9BQUwsQ0FBYVgsSUFBYixJQUFxQlAsUUFBckI7O0FBRUFBLGVBQVNDLEtBQVQ7QUFDRCxLQTFCSTtBQTJCTGtCLGlCQTNCSywyQkEyQlk7QUFDZixVQUFNbkIsV0FBV00sSUFBSU0sTUFBSixHQUFhTixHQUFiLEdBQW1CLEtBQUtZLE9BQUwsQ0FBYVgsSUFBYixDQUFwQztBQUNBLFVBQUlQLFFBQUosRUFBYztBQUNaQSxpQkFBU0ksT0FBVDtBQUNEO0FBQ0Y7QUFoQ0ksR0FBUDtBQWtDRDs7QUFFRCxJQUFJZ0IsTUFBTSxDQUFWOztBQUVPLFNBQVNKLFdBQVQsQ0FBc0JQLEdBQXRCLEVBQTJCSSxLQUEzQixFQUFrQztBQUN2QyxNQUFNTixPQUFPRSxJQUFJRixJQUFKLFVBQWdCYSxLQUE3QjtBQUNBLE1BQUlwQixXQUFXYSxNQUFNTixJQUFOLENBQWY7QUFDQSxNQUFJLENBQUNQLFFBQUwsRUFBZTtBQUNiQSxlQUFXYSxNQUFNTixJQUFOLElBQWMsSUFBSVQsR0FBSixDQUFRVyxHQUFSLENBQXpCO0FBQ0Q7QUFDRCxTQUFPVCxRQUFQO0FBQ0Q7O0FBRUQsSUFBTVUsT0FBTyxFQUFiOztBQUVPLFNBQVNXLFFBQVQsQ0FBbUJkLElBQW5CLEVBQXlCRSxHQUF6QixFQUE4QjtBQUNuQ0EsTUFBSUYsSUFBSixHQUFXQSxJQUFYO0FBQ0FHLE9BQUtILElBQUwsSUFBYUUsR0FBYjtBQUNEOztBQUVNLFNBQVNhLFlBQVQsQ0FBdUJDLFlBQXZCLEVBQXFDVixLQUFyQyxFQUE0QztBQUNqRCxNQUFJVyxTQUFTRCxZQUFiO0FBQ0EsTUFBSSxRQUFPQSxhQUFhRSxNQUFwQixNQUErQixRQUFuQyxFQUE2QztBQUMzQyxRQUFNQyxXQUFXSCxhQUFhRSxNQUFiLENBQW9CcEIsR0FBcEIsQ0FBd0JzQixNQUF4QixDQUErQixVQUFDQyxHQUFELEVBQU1yQixJQUFOLEVBQWU7QUFDN0RxQixVQUFJckIsSUFBSixJQUFZUyxZQUFZTixLQUFLSCxJQUFMLENBQVosRUFBd0JNLEtBQXhCLENBQVo7QUFDQSxhQUFPZSxHQUFQO0FBQ0QsS0FIZ0IsRUFHZCxFQUhjLENBQWpCO0FBSUEsUUFBTUMsYUFBYU4sYUFBYUUsTUFBYixDQUFvQkssTUFBcEIsQ0FBMkJKLFFBQTNCLENBQW5CO0FBQ0FGLGFBQVMsRUFBVDtBQUNBLFNBQUssSUFBTU8sR0FBWCxJQUFrQlIsWUFBbEIsRUFBZ0M7QUFDOUJDLGFBQU9PLEdBQVAsSUFBY0MsT0FBT0MsTUFBUCxDQUFjLEVBQWQsRUFBa0JWLGFBQWFRLEdBQWIsQ0FBbEIsRUFBcUNGLFdBQVdFLEdBQVgsQ0FBckMsQ0FBZDtBQUNEO0FBQ0QsV0FBT1AsT0FBT0MsTUFBZDtBQUNEOztBQUVELE1BQUksUUFBT0YsYUFBYVcsT0FBcEIsTUFBZ0MsUUFBcEMsRUFBOEM7QUFDNUMsU0FBSyxJQUFNSCxJQUFYLElBQWtCUixhQUFhVyxPQUEvQixFQUF3QztBQUN0QyxVQUFNQyxTQUFTWixhQUFhVyxPQUFiLENBQXFCSCxJQUFyQixDQUFmO0FBQ0FQLGFBQU9VLE9BQVAsQ0FBZUgsSUFBZixJQUFzQlQsYUFBYWEsTUFBYixFQUFxQnRCLEtBQXJCLENBQXRCO0FBQ0Q7QUFDRjs7QUFFRCxTQUFPVyxNQUFQO0FBQ0Q7O0FBRU0sU0FBU1ksT0FBVCxDQUFrQkMsSUFBbEIsRUFBd0I7QUFDN0J2QyxRQUFNdUMsSUFBTjs7QUFFQXZDLE1BQUl3QyxLQUFKLENBQVU7QUFDUkMsUUFEUSxrQkFDQTtBQUNOLFVBQUksS0FBS0MsUUFBTCxDQUFjQyxXQUFsQixFQUErQjtBQUM3QixhQUFLMUIsWUFBTCxHQUFvQixLQUFLeUIsUUFBTCxDQUFjQyxXQUFsQztBQUNEO0FBQ0Y7QUFMTyxHQUFWO0FBT0Q7O0FBRUQ7O0FBSUE7QUFDQTs7QUFFQTtBQUNBLElBQU1DLFNBQVM7QUFDYjtBQUNBQyxXQUFTLE9BRkk7QUFHYlA7QUFIYSxDQUFmOztBQU1BLCtEQUFlTSxNQUFmOztBQUVBO0FBQ0EsSUFBSUUsWUFBWSxJQUFoQjtBQUNBLElBQUksT0FBT0MsTUFBUCxLQUFrQixXQUF0QixFQUFtQztBQUNqQ0QsY0FBWUMsT0FBTy9DLEdBQW5CO0FBQ0QsQ0FGRCxNQUVPLElBQUksT0FBT2dELE1BQVAsS0FBa0IsV0FBdEIsRUFBbUM7QUFDeENGLGNBQVlFLE9BQU9oRCxHQUFuQjtBQUNEO0FBQ0QsSUFBSThDLFNBQUosRUFBZTtBQUNiQSxZQUFVdkMsR0FBVixDQUFjcUMsTUFBZDtBQUNELEMiLCJmaWxlIjoiMi5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBTdXBwbHkgZnJvbSAnLi9yZXNvdXJjZS1zdXBwbHknXG5sZXQgVnVlXG5cbi8vIEZvciBwZXJpb2RpY2FsbHkgdXNpbmcgYSBTdXBwbHlcbi8vIEdyYXNwIHRoZSBTdXBwbHkgYW5kIHdhaXRzIGZvciBpdCB0byBiZSByZWFkeVxuZXhwb3J0IGZ1bmN0aW9uIGNvbnN1bWUgKHJlc291cmNlKSB7XG4gIHJlc291cmNlLmdyYXNwKClcbiAgcmV0dXJuIHJlc291cmNlLmVuc3VyZVJlYWR5KCkudGhlbigoKSA9PiByZXNvdXJjZS5yZWxlYXNlKVxufVxuXG4vLyBEZWNsYXJlIHVzaW5nIGEgU3VwcGx5XG4vLyBBdXRvbWF0aWNhbGx5IGFjdGl2YXRlaW5nICYgZGVhY3RpdmF0aW5nIGl0IHdoZW4gbm8gbG9uZ2VyIHVzZWRcbmV4cG9ydCBmdW5jdGlvbiB1c2UgKGFyZykge1xuICBsZXQgbmFtZVxuICByZXR1cm4ge1xuICAgIGNyZWF0ZWQgKCkge1xuICAgICAgbGV0IHJlc291cmNlXG4gICAgICBsZXQgZGVmID0gYXJnXG5cbiAgICAgIGlmICh0eXBlb2YgZGVmID09PSAnc3RyaW5nJykge1xuICAgICAgICBjb25zdCBuYW1lID0gZGVmXG4gICAgICAgIGRlZiA9IGRlZnNbbmFtZV1cbiAgICAgICAgaWYgKCFkZWYpIHtcbiAgICAgICAgICB0aHJvdyBFcnJvcihgU3VwcGx5ICcke25hbWV9JyBub3QgZm91bmQuIERpZCB5b3UgcmVnaXN0ZXIgaXQ/YClcbiAgICAgICAgfVxuICAgICAgfVxuXG4gICAgICBpZiAoIWRlZi5faXNWdWUpIHtcbiAgICAgICAgY29uc3QgY2FjaGUgPSB0aGlzLiRyb290Ll9zdXBwbHlDYWNoZSA9IHRoaXMuJHJvb3QuX3N1cHBseUNhY2hlIHx8IHt9XG4gICAgICAgIHJlc291cmNlID0gZ2V0UmVzb3VyY2UoZGVmLCBjYWNoZSlcbiAgICAgICAgbmFtZSA9IGRlZi5uYW1lXG4gICAgICB9IGVsc2Uge1xuICAgICAgICBuYW1lID0gYXJnLl91aWRcbiAgICAgICAgcmVzb3VyY2UgPSBhcmdcbiAgICAgIH1cblxuICAgICAgdGhpcy4kc3VwcGx5ID0gdGhpcy4kc3VwcGx5IHx8IHt9XG4gICAgICB0aGlzLiRzdXBwbHlbbmFtZV0gPSByZXNvdXJjZVxuXG4gICAgICByZXNvdXJjZS5ncmFzcCgpXG4gICAgfSxcbiAgICBiZWZvcmVEZXN0cm95ICgpIHtcbiAgICAgIGNvbnN0IHJlc291cmNlID0gYXJnLl9pc1Z1ZSA/IGFyZyA6IHRoaXMuJHN1cHBseVtuYW1lXVxuICAgICAgaWYgKHJlc291cmNlKSB7XG4gICAgICAgIHJlc291cmNlLnJlbGVhc2UoKVxuICAgICAgfVxuICAgIH0sXG4gIH1cbn1cblxubGV0IHVpZCA9IDBcblxuZXhwb3J0IGZ1bmN0aW9uIGdldFJlc291cmNlIChkZWYsIGNhY2hlKSB7XG4gIGNvbnN0IG5hbWUgPSBkZWYubmFtZSB8fCBgXyR7dWlkKyt9YFxuICBsZXQgcmVzb3VyY2UgPSBjYWNoZVtuYW1lXVxuICBpZiAoIXJlc291cmNlKSB7XG4gICAgcmVzb3VyY2UgPSBjYWNoZVtuYW1lXSA9IG5ldyBWdWUoZGVmKVxuICB9XG4gIHJldHVybiByZXNvdXJjZVxufVxuXG5jb25zdCBkZWZzID0ge31cblxuZXhwb3J0IGZ1bmN0aW9uIHJlZ2lzdGVyIChuYW1lLCBkZWYpIHtcbiAgZGVmLm5hbWUgPSBuYW1lXG4gIGRlZnNbbmFtZV0gPSBkZWZcbn1cblxuZXhwb3J0IGZ1bmN0aW9uIGluamVjdFN1cHBseSAoc3RvcmVPcHRpb25zLCBjYWNoZSkge1xuICBsZXQgcmVzdWx0ID0gc3RvcmVPcHRpb25zXG4gIGlmICh0eXBlb2Ygc3RvcmVPcHRpb25zLnN1cHBseSA9PT0gJ29iamVjdCcpIHtcbiAgICBjb25zdCBzdXBwbGllcyA9IHN0b3JlT3B0aW9ucy5zdXBwbHkudXNlLnJlZHVjZSgoZGljLCBuYW1lKSA9PiB7XG4gICAgICBkaWNbbmFtZV0gPSBnZXRSZXNvdXJjZShkZWZzW25hbWVdLCBjYWNoZSlcbiAgICAgIHJldHVybiBkaWNcbiAgICB9LCB7fSlcbiAgICBjb25zdCBuZXdPcHRpb25zID0gc3RvcmVPcHRpb25zLnN1cHBseS5pbmplY3Qoc3VwcGxpZXMpXG4gICAgcmVzdWx0ID0ge31cbiAgICBmb3IgKGNvbnN0IGtleSBpbiBzdG9yZU9wdGlvbnMpIHtcbiAgICAgIHJlc3VsdFtrZXldID0gT2JqZWN0LmFzc2lnbih7fSwgc3RvcmVPcHRpb25zW2tleV0sIG5ld09wdGlvbnNba2V5XSlcbiAgICB9XG4gICAgZGVsZXRlIHJlc3VsdC5zdXBwbHlcbiAgfVxuXG4gIGlmICh0eXBlb2Ygc3RvcmVPcHRpb25zLm1vZHVsZXMgPT09ICdvYmplY3QnKSB7XG4gICAgZm9yIChjb25zdCBrZXkgaW4gc3RvcmVPcHRpb25zLm1vZHVsZXMpIHtcbiAgICAgIGNvbnN0IG1vZHVsZSA9IHN0b3JlT3B0aW9ucy5tb2R1bGVzW2tleV1cbiAgICAgIHJlc3VsdC5tb2R1bGVzW2tleV0gPSBpbmplY3RTdXBwbHkobW9kdWxlLCBjYWNoZSlcbiAgICB9XG4gIH1cblxuICByZXR1cm4gcmVzdWx0XG59XG5cbmV4cG9ydCBmdW5jdGlvbiBpbnN0YWxsIChwVnVlKSB7XG4gIFZ1ZSA9IHBWdWVcblxuICBWdWUubWl4aW4oe1xuICAgIGluaXQgKCkge1xuICAgICAgaWYgKHRoaXMuJG9wdGlvbnMuc3VwcGx5Q2FjaGUpIHtcbiAgICAgICAgdGhpcy5fc3VwcGx5Q2FjaGUgPSB0aGlzLiRvcHRpb25zLnN1cHBseUNhY2hlXG4gICAgICB9XG4gICAgfSxcbiAgfSlcbn1cblxuZXhwb3J0IHtcbiAgU3VwcGx5LFxufVxuXG4vKiAtLSBQbHVnaW4gZGVmaW5pdGlvbiAmIEF1dG8taW5zdGFsbCAtLSAqL1xuLyogWW91IHNob3VsZG4ndCBoYXZlIHRvIG1vZGlmeSB0aGUgY29kZSBiZWxvdyAqL1xuXG4vLyBQbHVnaW5cbmNvbnN0IHBsdWdpbiA9IHtcbiAgLyogZXNsaW50LWRpc2FibGUgbm8tdW5kZWYgKi9cbiAgdmVyc2lvbjogVkVSU0lPTixcbiAgaW5zdGFsbCxcbn1cblxuZXhwb3J0IGRlZmF1bHQgcGx1Z2luXG5cbi8vIEF1dG8taW5zdGFsbFxubGV0IEdsb2JhbFZ1ZSA9IG51bGxcbmlmICh0eXBlb2Ygd2luZG93ICE9PSAndW5kZWZpbmVkJykge1xuICBHbG9iYWxWdWUgPSB3aW5kb3cuVnVlXG59IGVsc2UgaWYgKHR5cGVvZiBnbG9iYWwgIT09ICd1bmRlZmluZWQnKSB7XG4gIEdsb2JhbFZ1ZSA9IGdsb2JhbC5WdWVcbn1cbmlmIChHbG9iYWxWdWUpIHtcbiAgR2xvYmFsVnVlLnVzZShwbHVnaW4pXG59XG5cblxuXG4vLyBXRUJQQUNLIEZPT1RFUiAvL1xuLy8gLi9zcmMvaW5kZXguanMiXSwic291cmNlUm9vdCI6IiJ9");
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (immutable) */ __webpack_exports__["consume"] = consume;
+/* harmony export (immutable) */ __webpack_exports__["use"] = use;
+/* harmony export (immutable) */ __webpack_exports__["getResource"] = getResource;
+/* harmony export (immutable) */ __webpack_exports__["register"] = register;
+/* harmony export (immutable) */ __webpack_exports__["injectSupply"] = injectSupply;
+/* harmony export (immutable) */ __webpack_exports__["install"] = install;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__resource_supply__ = __webpack_require__(0);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Supply", function() { return __WEBPACK_IMPORTED_MODULE_0__resource_supply__["a"]; });
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+
+var Vue = void 0;
+
+// For periodically using a Supply
+// Grasp the Supply and waits for it to be ready
+function consume(resource) {
+  resource.grasp();
+  return resource.ensureReady().then(function () {
+    return resource.release;
+  });
+}
+
+// Declare using a Supply
+// Automatically activateing & deactivating it when no longer used
+function use(arg) {
+  var name = void 0;
+  return {
+    created: function created() {
+      var resource = void 0;
+      var def = arg;
+
+      if (typeof def === 'string') {
+        var _name = def;
+        def = defs[_name];
+        if (!def) {
+          throw Error('Supply \'' + _name + '\' not found. Did you register it?');
+        }
+      }
+
+      if (!def._isVue) {
+        var cache = this.$root._supplyCache = this.$root._supplyCache || {};
+        resource = getResource(def, cache);
+        name = def.name;
+      } else {
+        name = arg._uid;
+        resource = arg;
+      }
+
+      this.$supply = this.$supply || {};
+      this.$supply[name] = resource;
+
+      resource.grasp();
+    },
+    beforeDestroy: function beforeDestroy() {
+      var resource = arg._isVue ? arg : this.$supply[name];
+      if (resource) {
+        resource.release();
+      }
+    }
+  };
+}
+
+var uid = 0;
+
+function getResource(def, cache) {
+  var name = def.name || '_' + uid++;
+  var resource = cache[name];
+  if (!resource) {
+    resource = cache[name] = new Vue(def);
+  }
+  return resource;
+}
+
+var defs = {};
+
+function register(name, def) {
+  def.name = name;
+  defs[name] = def;
+}
+
+function injectSupply(storeOptions, cache) {
+  var result = storeOptions;
+  if (_typeof(storeOptions.supply) === 'object') {
+    var supplies = storeOptions.supply.use.reduce(function (dic, name) {
+      dic[name] = getResource(defs[name], cache);
+      return dic;
+    }, {});
+    var newOptions = storeOptions.supply.inject(supplies);
+    result = {};
+    for (var key in storeOptions) {
+      result[key] = Object.assign({}, storeOptions[key], newOptions[key]);
+    }
+    delete result.supply;
+  }
+
+  if (_typeof(storeOptions.modules) === 'object') {
+    for (var _key in storeOptions.modules) {
+      var module = storeOptions.modules[_key];
+      result.modules[_key] = injectSupply(module, cache);
+    }
+  }
+
+  return result;
+}
+
+function install(pVue) {
+  Vue = pVue;
+
+  Vue.mixin({
+    init: function init() {
+      if (this.$options.supplyCache) {
+        this._supplyCache = this.$options.supplyCache;
+      }
+    }
+  });
+}
+
+
+
+/* -- Plugin definition & Auto-install -- */
+/* You shouldn't have to modify the code below */
+
+// Plugin
+var plugin = {
+  /* eslint-disable no-undef */
+  version: "0.2.0",
+  install: install
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (plugin);
+
+// Auto-install
+var GlobalVue = null;
+if (typeof window !== 'undefined') {
+  GlobalVue = window.Vue;
+} else if (typeof global !== 'undefined') {
+  GlobalVue = global.Vue;
+}
+if (GlobalVue) {
+  GlobalVue.use(plugin);
+}
 
 /***/ })
 /******/ ]);
-});
+//# sourceMappingURL=vue-supply.common.js.map
