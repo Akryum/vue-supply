@@ -327,7 +327,7 @@ function install(pVue) {
   Vue = pVue;
 
   Vue.mixin({
-    init: function init() {
+    beforeCreate: function beforeCreate() {
       if (this.$options.supplyCache) {
         this._supplyCache = this.$options.supplyCache;
       }
@@ -343,7 +343,7 @@ function install(pVue) {
 // Plugin
 var plugin = {
   /* eslint-disable no-undef */
-  version: "0.2.0",
+  version: "0.2.1",
   install: install
 };
 

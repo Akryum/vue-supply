@@ -95,7 +95,7 @@ export function install (pVue) {
   Vue = pVue
 
   Vue.mixin({
-    init () {
+    beforeCreate () {
       if (this.$options.supplyCache) {
         this._supplyCache = this.$options.supplyCache
       }
