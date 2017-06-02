@@ -67,15 +67,24 @@ Vue.use(VueSupply)
 
 A supply is a Vue instance which is responsible for managing a piece of dynamic data (for example, a Meteor, GraphQL or Firebase subscription with data that may change and update from the server). It has an deactivated state (default), and an activated state when the data should be updated (for example, when a subscription is running).
 
-To create a supply, create a new Vue instance extending the `Supply` definition:
+To create a supply, write a Vue definition object extending the `Supply` definition:
 
 ```javascript
 import { Supply } from 'vue-supply'
 
-export default new Vue({
+export default {
   extends: Supply,
   // Vue options here
-})
+}
+```
+
+Then you can manually create a supply with the Vue constructor:
+
+```javascript
+import Vue from 'vue'
+import TestResourceDef from 'supply/test-resource'
+
+const TestResource = new Vue(TestResource)
 ```
 
 The two methods when using the supply are:
@@ -86,8 +95,6 @@ The two methods when using the supply are:
 To activate or deactivate the supply, use the `grasp` and `release` methods where you need to access the supply:
 
 ```javascript
-import TestResource from 'supply/test-resource'
-
 console.log(TestResource.consumers) // 0
 TestResource.grasp()
 console.log(TestResource.consumers) // 1
@@ -101,14 +108,14 @@ The supply will emit a `consumers` event with the count when it changes.
 The supply is active if it has one or more `consumers`. When it becomes active, it calls the `activate` method, which you should override in the definition:
 
 ```javascript
-export default new Vue({
+export default {
   extends: Supply,
   methods: {
     activate () {
       // Subscribe
     },
   },
-})
+}
 ```
 
 Also, the `active` event is emitted on the supply, with a `true` boolean argument, and the `is-active` event.
@@ -122,7 +129,7 @@ TestResource.$on('active', (isActive) => {
 And when there are no more consumer for the supply, the `deactivate` method is called:
 
 ```javascript
-export default new Vue({
+export default {
   extends: Supply,
   methods: {
     activate () {
@@ -132,7 +139,7 @@ export default new Vue({
       // Unsubscribe
     },
   },
-})
+}
 ```
 
 Also, the `active` event is emitted on the supply, with a `false` boolean argument, and the `is-not-active` event.
@@ -140,15 +147,9 @@ Also, the `active` event is emitted on the supply, with a `false` boolean argume
 There is a `active` computed boolean available that changes when the supply is activated or deactivated:
 
 ```javascript
-import TestResource from 'supply/test-resource'
-
-export default {
-  computed: {
-    isResourceUsed () {
-      return TestResource.active
-    },
-  },
-}
+TestResource.$watch('active', isActive => {
+  console.log(isActive)
+})
 ```
 
 You can also use the `supply.ensureActive()` method which return a promise that resolves as soon as the supply is activated (or immediatly if it is already):
@@ -159,20 +160,31 @@ TestResource.ensureActive().then(() => {
 })
 ```
 
-Inside a component, add a mixin with `use(supply)` to automatically `grasp` and `release` the supply when the component is created and destroyed:
+## Registration
+
+It is recommended to register the supply definition to enable injection in components and in the vuew store.
+
+```javascript
+import { register } from 'vue-supply'
+import TestResourceDef from 'supply/test-resource'
+register('TestResource', TestResourceDef)
+```
+
+## Usage in components
+
+Inside a component, add a mixin with `use(name)` to automatically `grasp` and `release` the supply when the component is created and destroyed, using the name used in the registration (see above):
 
 ```javascript
 import { use } from 'vue-supply'
-import TestResource from 'supply/test-supply'
 
 export default {
   // This component now uses TestResource
-  mixins: [use(TestResource)],
+  mixins: [use('TestResource')],
 
   // Use the values in computed properties
   computed: {
     answer () {
-      return TestResource.someData
+      return this.$supply.TestResource.someData
     },
   },
 
@@ -180,26 +192,34 @@ export default {
 }
 ```
 
-Then you can use the supply data inside computed properties or inside methods:
+Then you can use the supply data inside computed properties or inside methods with the `this.$supply[name]` object:
 
 ```javascript
 // Use the values in computed properties
 computed: {
   answer () {
-    return TestResource.someData
+    return this.$supply.TestResource.someData
   },
 },
 ```
 
-Inside a vuex store, you can use the supply data inside getters:
+## Usage in Vuex store
+
+Inside a vuex store, you can inject getters that use supplies:
 
 ```javascript
-import TestResource from 'test-supply'
-
 export default {
+  supply: {
+    use: ['TestResource'],
+    inject: ({ TestResource }) => ({
+      getters: {
+        'all-items': () => TestResource.items,
+      },
+    }),
+  },
+
   getters: {
-    // Use the supply data in getters
-    'my-getter': state => TestResource.someData + state.something,
+    'count': (state, getters) => getters['all-items'].length,
   },
 }
 ```
@@ -207,22 +227,48 @@ export default {
 Then to activate/deactivate the supply, you can either call the `grasp` and `release` methods inside actions:
 
 ```javascript
-actions: {
-  'subscribe-action' () {
-    // Request usage in the store
-    // Ex: subscribing to a Meteor publication
-    TestResource.grasp()
-  },
+supply: {
+  use: ['TestResource'],
+  inject: ({ TestResource }) => ({
+    getters: {
+      'all-items': () => TestResource.items,
+    },
 
-  'unsubscribe-action' () {
-    // No longer used in the store
-    // Ex: unsubscribing from a Meteor publication
-    TestResource.release()
+    actions: {
+      'subscribe-action' () {
+        // Request usage in the store
+        // Ex: subscribing to a Meteor publication
+        TestResource.grasp()
+      },
+
+      'unsubscribe-action' () {
+        // No longer used in the store
+        // Ex: unsubscribing from a Meteor publication
+        TestResource.release()
+      },
+    }
+  }),
+},
+```
+
+Or with the mixins and the `use` function inside components using the getter:
+
+```javascript
+import { use } from 'vue-supply'
+import { mapGetters } from 'vuex'
+
+export default {
+  // This component now uses TestResource supply
+  mixins: [use('TestResource')],
+
+  // Use getter that utilize the supply
+  computed: {
+    ...mapGetters({
+      items: 'all-items',
+    })
   },
 }
 ```
-
-Or with the mixins and the `use` function inside components using the getter (see above).
 
 ## Asynchronous data
 
@@ -290,6 +336,65 @@ const release = await consume(TestResource)
 console.log('consumers', TestResource.consumers)
 // When you are done with the supply, release it
 release()
+```
+
+## Base supply definition
+
+It's often useful to create a base definition for each supply.
+
+Example for Meteor:
+
+```javascript
+// base.js
+import { Supply } from 'vue-supply'
+
+export default {
+  extends: Supply,
+
+  methods: {
+    activate () {
+      this.$startMeteor()
+    },
+
+    deactivate () {
+      this.$stopMeteor()
+    },
+  },
+
+  meteor: {
+    $lazy: true,
+  },
+}
+```
+
+Example supply:
+
+```javascript
+// Items.js
+import base from './base'
+import { Items } from '../api/collections'
+
+export default {
+  name: 'Items',
+
+  extends: base,
+
+  data () {
+    return {
+      items: [],
+    }
+  },
+
+  meteor: {
+    $subscribe: {
+      'items': [],
+    },
+
+    items () {
+      return Items.find({})
+    },
+  },
+}
 ```
 
 # Examples

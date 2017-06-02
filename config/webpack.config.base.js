@@ -1,13 +1,16 @@
+var path = require('path')
 var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 var outputFile = 'vue-supply'
-var globalName = 'VueSupply'
 
 var config = require('../package.json')
 
 module.exports = {
   entry: './src/index.js',
+  output: {
+    path: path.resolve(process.cwd(), './dist'),
+  },
   module: {
     rules: [
       {

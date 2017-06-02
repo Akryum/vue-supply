@@ -1,4 +1,5 @@
 import Supply from './resource-supply'
+let Vue
 
 // For periodically using a Supply
 // Grasp the Supply and waits for it to be ready
@@ -9,19 +10,97 @@ export function consume (resource) {
 
 // Declare using a Supply
 // Automatically activateing & deactivating it when no longer used
-export function use (resource) {
+export function use (arg) {
+  let name
   return {
     created () {
+      let resource
+      let def = arg
+
+      if (typeof def === 'string') {
+        const name = def
+        def = defs[name]
+        if (!def) {
+          throw Error(`Supply '${name}' not found. Did you register it?`)
+        }
+      }
+
+      if (!def._isVue) {
+        const cache = this.$root._supplyCache = this.$root._supplyCache || {}
+        resource = getResource(def, cache)
+        name = def.name
+      } else {
+        name = arg._uid
+        resource = arg
+      }
+
+      this.$supply = this.$supply || {}
+      this.$supply[name] = resource
+
       resource.grasp()
     },
     beforeDestroy () {
-      resource.release()
+      const resource = arg._isVue ? arg : this.$supply[name]
+      if (resource) {
+        resource.release()
+      }
     },
   }
 }
 
-export function install (Vue) {
-  // Nothing yet
+let uid = 0
+
+export function getResource (def, cache) {
+  const name = def.name || `_${uid++}`
+  let resource = cache[name]
+  if (!resource) {
+    resource = cache[name] = new Vue(def)
+  }
+  return resource
+}
+
+const defs = {}
+
+export function register (name, def) {
+  def.name = name
+  defs[name] = def
+}
+
+export function injectSupply (storeOptions, cache) {
+  let result = storeOptions
+  if (typeof storeOptions.supply === 'object') {
+    const supplies = storeOptions.supply.use.reduce((dic, name) => {
+      dic[name] = getResource(defs[name], cache)
+      return dic
+    }, {})
+    const newOptions = storeOptions.supply.inject(supplies)
+    result = {}
+    for (const key in storeOptions) {
+      result[key] = Object.assign({}, storeOptions[key], newOptions[key])
+    }
+    delete result.supply
+  }
+
+  if (typeof storeOptions.modules === 'object') {
+    for (const key in storeOptions.modules) {
+      const module = storeOptions.modules[key]
+      result.modules[key] = injectSupply(module, cache)
+    }
+  }
+
+  return result
+}
+
+export function install (pVue) {
+  Vue = pVue
+
+  Vue.mixin({
+    init () {
+      if (this.$options.supplyCache) {
+        this._supplyCache = this.$options.supplyCache
+      }
+    },
+  })
 }
 
 export {

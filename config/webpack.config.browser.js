@@ -7,7 +7,6 @@ var globalName = 'VueSupply'
 
 module.exports = merge(base, {
   output: {
-    path: './dist',
     filename: outputFile + '.browser.js',
     library: globalName,
     libraryTarget: 'umd',

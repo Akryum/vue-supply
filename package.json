@@ -1,7 +1,7 @@
 {
   "name": "vue-supply",
   "description": "Create resources that can automatically be activated and deactivated when used (like subscriptions) ",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": {
     "name": "Guillaume Chau",
     "email": "guillaume.b.chau@gmail.com"
@@ -46,7 +46,7 @@
     "extract-text-webpack-plugin": "^2.0.0-beta.4",
     "vue-loader": "^10.0.0",
     "vue-template-compiler": "^2.1.6",
-    "webpack": "^2.1.0-beta.28",
+    "webpack": "^2.1.0",
     "webpack-merge": "^1.1.2"
   }
 }
