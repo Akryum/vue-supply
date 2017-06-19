@@ -174,7 +174,7 @@ register('TestResource', TestResourceDef)
 
 ## Usage in components
 
-Inside a component, add a mixin with `use(name)` to automatically `grasp` and `release` the supply when the component is created and destroyed, using the name used in the registration (see above):
+Inside a component, add a mixin with `use(name, manageKeepAlive = true)` to automatically `grasp` and `release` the supply when the component is created and destroyed, using the name used in the registration (see above):
 
 ```javascript
 import { use } from 'vue-supply'

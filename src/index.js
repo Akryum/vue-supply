@@ -10,9 +10,9 @@ export function consume (resource) {
 
 // Declare using a Supply
 // Automatically activateing & deactivating it when no longer used
-export function use (arg) {
+export function use (arg, manageKeepAlive = true) {
   let name
-  return {
+  const options = {
     created () {
       let resource
       let def = arg
@@ -46,6 +46,25 @@ export function use (arg) {
       }
     },
   }
+
+  if (manageKeepAlive) {
+    Object.assign(options, {
+      activated () {
+        const resource = arg._isVue ? arg : this.$supply[name]
+        if (resource) {
+          resource.grasp()
+        }
+      },
+      deactivated () {
+        const resource = arg._isVue ? arg : this.$supply[name]
+        if (resource) {
+          resource.release()
+        }
+      },
+    })
+  }
+
+  return options
 }
 
 let uid = 0

@@ -243,8 +243,10 @@ function consume(resource) {
 // Declare using a Supply
 // Automatically activateing & deactivating it when no longer used
 function use(arg) {
+  var manageKeepAlive = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
   var name = void 0;
-  return {
+  var options = {
     created: function created() {
       var resource = void 0;
       var def = arg;
@@ -278,6 +280,25 @@ function use(arg) {
       }
     }
   };
+
+  if (manageKeepAlive) {
+    Object.assign(options, {
+      activated: function activated() {
+        var resource = arg._isVue ? arg : this.$supply[name];
+        if (resource) {
+          resource.grasp();
+        }
+      },
+      deactivated: function deactivated() {
+        var resource = arg._isVue ? arg : this.$supply[name];
+        if (resource) {
+          resource.release();
+        }
+      }
+    });
+  }
+
+  return options;
 }
 
 var uid = 0;
@@ -343,7 +364,7 @@ function install(pVue) {
 // Plugin
 var plugin = {
   /* eslint-disable no-undef */
-  version: "0.2.1",
+  version: "0.3.0",
   install: install
 };
 
