@@ -9,6 +9,8 @@
 
 Create resources that can automatically be activated and deactivated when used (like subscriptions)
 
+💬 [VueConf 2017 demo](https://github.com/Akryum/vueconf-2017-demo) &amp; [slides](http://slides.com/akryum/graphql#/)
+
 # Table of contents
 
 - [Why do I need this?](#why-do-i-need-this)
