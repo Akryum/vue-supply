@@ -166,7 +166,7 @@ TestResource.ensureActive().then(() => {
 
 ## Registration
 
-It is recommended to register the supply definition to enable injection in components and in the vuew store.
+It is recommended to register the supply definition to enable injection in components and in the vuex store.
 
 ```javascript
 import { register } from 'vue-supply'
